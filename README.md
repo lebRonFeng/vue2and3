@@ -20,8 +20,8 @@
 
 ## 关于不同版本的vue
 - vue.js与vue.runtime.xxx.js的区别：
-    (1).vue.js是完整版的Vue,包含：核心功能+模板解析器。
-    (2).vue.runtime.xxx.js是要运行版本的vue，只包含：核心功能，没有模板解析器。
+    - (1).vue.js是完整版的Vue,包含：核心功能+模板解析器。
+    - (2).vue.runtime.xxx.js是要运行版本的vue，只包含：核心功能，没有模板解析器。
 - 因为vue.runtime.xxx.js没有模板解析器，所以不能使用template配置项，需要使用render函数接收到createElement函数去指定具体内容。
   
 ## vue.config.js配置文件
@@ -57,3 +57,16 @@
                     }
                 }
     备注：props是只读的，Vue底层会监测你对props的修改，如果进行了修改，就会发出警告，若业务需求确实需要修改，那么请复制props的内容到data种一份，然后去修改data种的数据。
+
+## mixin(混入)
+    功能：可以把多个组件共用的配置项提取成一个混入对象
+    使用方法：
+        第一步定义混合，例如：
+            {
+                data(){...},
+                methods:{...}
+                ...
+            }
+        第二步使用混入，例如：
+            (1).全局混入：Vue.mixin(xxx)
+            (2).局部混入：mixins:['xxx']
