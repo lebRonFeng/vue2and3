@@ -1,8 +1,12 @@
 <template>
   <div class="todo-container todo-wrap">
-    <MyHeader :addTodo="addTodo"/>
-    <MyList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
-    <MyFooter :todos="todos" :checkAllTodo="checkAllTodo" :clearAllTodo="clearAllTodo"/>
+    <MyHeader :addTodo="addTodo" />
+    <MyList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo" />
+    <MyFooter
+      :todos="todos"
+      :checkAllTodo="checkAllTodo"
+      :clearAllTodo="clearAllTodo"
+    />
   </div>
 </template>
 
@@ -14,43 +18,52 @@ import MyFooter from "./components/MyFooter.vue";
 export default {
   name: "APP",
   components: { MyHeader, MyList, MyFooter },
-  data(){
+  data() {
     return {
-      todos: [
-        {id: '001', title: '抽烟', done: true},
-        {id: '002', title: '喝酒', done: false},
-        {id: '003', title: '开车', done: true}
-      ]
-    }
+      // todos: [
+      //   {id: '001', title: '抽烟', done: true},
+      //   {id: '002', title: '喝酒', done: false},
+      //   {id: '003', title: '开车', done: true}
+      // ]
+      todos: JSON.parse(localStorage.getItem("todos")) || [],
+    };
   },
   methods: {
     // 添加一个todo
-    addTodo(todoObj){
+    addTodo(todoObj) {
       this.todos.unshift(todoObj);
     },
     // 勾选or取消一个todo
-    checkTodo(id){
-      this.todos.forEach(todo => {
-        if(todo.id === id) todo.done = !todo.done
-      })
+    checkTodo(id) {
+      this.todos.forEach((todo) => {
+        if (todo.id === id) todo.done = !todo.done;
+      });
     },
     // 删除一个todo
-    deleteTodo(id){
-      this.todos = this.todos.filter(todo => todo.id !== id)
+    deleteTodo(id) {
+      this.todos = this.todos.filter((todo) => todo.id !== id);
     },
     // 全选or全不选
-    checkAllTodo(done){
+    checkAllTodo(done) {
       this.todos.forEach((todo) => {
-        todo.done = done
-      })
+        todo.done = done;
+      });
     },
     // 清除所有已经完成的todo
-    clearAllTodo(){
-      this.todos = this.todos.filter(todo => {
-        return !todo.done
-      })
-    }
+    clearAllTodo() {
+      this.todos = this.todos.filter((todo) => {
+        return !todo.done;
+      });
+    },
   },
+  watch: {
+    deep: true,
+    todos: {
+      handler(value) {
+        localStorage.setItem("todos", JSON.stringify(value));
+      },
+    },
+  }
 };
 </script>
 
