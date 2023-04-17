@@ -2,7 +2,7 @@
   <div class="todo-container todo-wrap">
     <MyHeader :addTodo="addTodo"/>
     <MyList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
-    <MyFooter />
+    <MyFooter :todos="todos" :checkAllTodo="checkAllTodo" :clearAllTodo="clearAllTodo"/>
   </div>
 </template>
 
@@ -37,6 +37,18 @@ export default {
     // 删除一个todo
     deleteTodo(id){
       this.todos = this.todos.filter(todo => todo.id !== id)
+    },
+    // 全选or全不选
+    checkAllTodo(done){
+      this.todos.forEach((todo) => {
+        todo.done = done
+      })
+    },
+    // 清除所有已经完成的todo
+    clearAllTodo(){
+      this.todos = this.todos.filter(todo => {
+        return !todo.done
+      })
     }
   },
 };
