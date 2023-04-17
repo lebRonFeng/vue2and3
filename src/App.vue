@@ -1,7 +1,7 @@
 <template>
   <div class="todo-container todo-wrap">
-    <MyHeader />
-    <MyList />
+    <MyHeader :addTodo="addTodo"/>
+    <MyList :todos="todos" :checkTodo="checkTodo"/>
     <MyFooter />
   </div>
 </template>
@@ -14,10 +14,27 @@ import MyFooter from "./components/MyFooter.vue";
 export default {
   name: "APP",
   components: { MyHeader, MyList, MyFooter },
-  data() {
-    return {};
+  data(){
+    return {
+      todos: [
+        {id: '001', title: '抽烟', done: true},
+        {id: '002', title: '喝酒', done: false},
+        {id: '003', title: '开车', done: true}
+      ]
+    }
   },
-  methods: {},
+  methods: {
+    // 添加一个todo
+    addTodo(todoObj){
+      this.todos.unshift(todoObj);
+    },
+    // 勾选or取消一个todo
+    checkTodo(id){
+      this.todos.forEach(todo => {
+        if(todo.id === id) todo.done = !todo.done
+      })
+    }
+  },
 };
 </script>
 
