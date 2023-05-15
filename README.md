@@ -436,3 +436,20 @@
 3. 组件中修改vuex中的数据：```$store.dispatch('action中的方法名',数据)```或```$store.commit('mutations中的方法名',数据)```
 
 > 备注：若没有网络请求或者其他业务逻辑，组件中也可以越过actions,即不写```dispactch```,直接编写```commit```
+
+### 5.getters的使用
+1. 概念：当state中的数据需要经过加工后再使用时，可以使用getters加工。
+2. 在```store.js```中追加```getters```配置
+    ```js
+    ...
+    const getters = {
+        bigSum(state){
+            return state.sum * 10
+        }
+    }
+
+    //创建并暴漏store
+    export default new Vuex.Store({
+        ...
+        getters
+    })
