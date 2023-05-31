@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let person = {
+            name:'张三',
+            age:18,
+        }
+
+        // 模拟VUE2中实现响应式
+        /*let p = {}
+        Object.defineProperty(p, 'name',{
+            configurable:true,
+            get(){ //有人读取name时调用
+                return person.name
+            },
+            set(value){ //有人修改name属性
+                console.log('有人修改name属性,我发现了，我要去更新界面！')
+                person.name = value
+            }
+        })
+        Object.defineProperty(p, 'age',{
+            get(){ //有人读取age时调用
+                return person.age
+            },
+            set(value){ //有人修改age属性
+                console.log('有人修改age属性,我发现了，我要去更新界面！')
+                person.age = value
+            }
+        })*/
+
+        // 模拟Vue3中实现响应式
+        
+        const p = new Proxy(person,{
+            // 有人读取了p的某个属性时调用
+            get(target,propName){
+                console.log(`有人读取了p身上的${propName}属性`,target,propName)
+                return Reflect.get(target,propName)
+            },
+            // 有人修改了p的某个属性、或给p追加某个时候时调用
+            set(target,propName,value){
+                console.log(`有人修改了p身上的${propName}属性，我要去更新界面了！`)
+                target[propName] = value
+            },
+            // 有人删除了p的某个属性时调用
+            deleteProperty(target,propName){
+                console.log(`有人删除了p身上的${propName}属性，我要去更新界面了！`)
+                return delete target[propName]
+            }
+        })
+    
+
+        // let obj ={
+        //     a:1,
+        //     b:2
+        // }
+        // const x1 = Reflect.defineProperty(obj,'c',{
+        //     get(){
+        //         return 3
+        //     }
+        // })
+        // console.log(x1)
+        // const x2 = Reflect.defineProperty(obj,'c',{
+        //     get(){
+        //         return 4
+        //     }
+        // })
+        // console.log(x2)
+    </script>
+</body>
+</html>
