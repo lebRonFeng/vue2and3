@@ -336,3 +336,7 @@ Vue3.0的响应式
     - 如果有一个对象数据，后续功能不会修改对象中的属性，而是生新的对象来替换 ===> shallowRef。
 
 > 2.readonly与shalloeReadonly
+
+- readonly：让一个响应式数据变成只读的（深只读）。
+- shallowReadonly：让一个响应式数据变为只读的（浅只读）。
+- 应用场景：不希望数据被修改时。
