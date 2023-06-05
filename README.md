@@ -356,4 +356,71 @@ Vue3.0的响应式
 - 作用：创建一个自定义的ref，并对其依赖项跟踪和更新触发进行显式控制。
 - 实现防抖效果：
 
-```
+    ```
+    <template>
+        <input type="text" v-model="keyWord" />
+        <h3>{{ keyWord }}</h3>
+        <br />
+    </template>
+
+    <script>
+        import { ref, customRef } from "vue";
+        export default {
+        name: "App",
+        setup() {
+            // 自定义函数ref——名叫myRef
+            function myRef(value, delay) {
+                let timer;
+                return customRef((track, trigger) => {
+                    return {
+                    get() {
+                        console.log(`有人从muRef这个容器中读取数据了，我把${value}给他了`);
+                        track(); //通知vue追踪value的变化（提前和get商量一下，让他认为这个value是由用的）
+                        return value;
+                    },
+                    set(newValue) {
+                        console.log(`有人把Ref这个容器中数据改为了：${newValue}`);
+                        clearTimeout(timer);
+                        timer = setTimeout(() => {
+                        value = newValue;
+                        trigger(); //通知Vue重新解析模板
+                        }, delay);
+                    },
+                    };
+                });
+            }
+
+            // let keyWord = ref('hello') //使用Vue提供的ref
+            let keyWord = myRef("hello", 500);
+            return { keyWord };
+            },
+        };
+    </script>
+
+    ```
+
+> 5.provide与inject
+
+![节点](./public/provide.png)
+
+- 作用：实现祖孙组件间通信
+- 套路：父组件由一个`provide`选项来提供数据，子组件有一个`inject`选项来开始使用这些数据
+- 具体写法：
+    1.祖组件中：
+    ```
+    setup(){
+        ......
+        let car = reactive({name:'奔驰',price:'40万'})
+        provide('car',car)
+    }
+    ```
+
+    2.孙组件中：
+    ````
+    setup(props,context){
+        ......
+        const car = inject('car')
+        return {car}
+        ......
+    }
+    ```
