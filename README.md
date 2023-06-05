@@ -497,4 +497,82 @@ Vue3.0的响应式
         </div>
     </template>
     ```
+## 六、其他
 
+> 1.全局API的转移
+
+- Vue2.x有许多全局API和配置。
+    - 例如：注册全局组件、注册全局指令等。
+    ```
+    //注册全局组件
+    Vue.component('MyButton',{
+        data:() => ({
+            count: 0
+        }),
+        template: '<button @click="count++">Clicked{{count}}times.</button>'
+    })
+
+    //注册全局指令
+    Vue.directive('focus',{
+        inserted: el => el.focus()
+    })
+    ```
+
+- Vue3.0中对这些API做出了调整：
+    - 将全局的API，即`Vue.xxx`调整到应用实例（`app`）上
+
+![节点](./public/api.png)
+
+> 2.其他改变
+
+- data选项应始终被声明为一个函数。
+- 过度类名的更改：
+    - Vue2.x写法
+    ```
+    .v-enter,
+    .v-leave-to{
+        opacity:0;
+    }
+
+    .v-leave,
+    .v-enter-to{
+        opacity:1;
+    }
+    ```
+    - Vue3.x写法
+    ```
+    .v-enter-from,
+    .v-leave-to{
+        opacity:0;
+    }
+
+    .v-leave-from,
+    .v-enter-to{
+        opacity:1;
+    }
+    ```
+
+- 移出keyCode作为v-on的修饰符，同时也不再支持`config.keyCodes`
+- 移出`v-on:native`修饰符
+    - 父组件中绑定事件
+    ```
+    <my-component
+        v-on:close="handleComponentEvent"
+        v-on:click="handleNativeEvent"
+    />
+    ```
+
+    - 子组件中声明自定义事件
+    ```
+    <script>
+        export default{
+            emits:['close']
+        }
+    </script>
+    ```
+
+- 移出过滤器（filter）
+
+> 过滤器虽然看起来很方便，但它需要一个自定义语法，打破大括号内表达式是“只是javascript”的假设，这不仅有学习成本，而且有实现成本！建议用方法调用或者计算属性去替换过滤器。
+
+- ......
