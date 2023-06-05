@@ -430,3 +430,69 @@ Vue3.0的响应式
 - isReactive:检查一个对象是否是由`reactive`创建的响应式代理
 - isReadOnly:检查一个对象是否是由`readonly`创建的只读代理
 - isProxy:检查一个对象是否是由`reactive`或者`readonly`方法创建的代理。
+
+## 四、Composition API的优势
+
+> 1.Options API存在的问题
+
+使用传统的OptionsAPI中，新增或者修改一个需求，就需要分别再data,methods,computed里修改。
+
+![节点](./public/option1.png)
+
+> 2.Composition API的优势
+
+我们可以更加优雅的组织我们的代码，函数。让相关功能代码更加有序的组织在一起。
+
+![节点](./public/option2.png)
+
+
+## 五、新的组件
+
+> 1.Fragment
+
+- 在vue2中：组件必须由一个根标签
+- 在vue3中：组件可以没有根标签，内部会将多个标签包含在一个Fragment虚拟元素中
+- 好处：减少标签层级，减小内存占用
+
+> 2.Teleport
+
+- 什么是Teleport? ——`Teleport`是一种能够将我们的`组件html结构`移动到指定位置的技术。
+
+    ```
+    <teleport to="body">
+      <div v-if="isShow" class="mask">
+        <div class="dialog">
+          <h3>我是一个弹窗</h3>
+          <h4>一些内容</h4>
+          <h4>一些内容</h4>
+          <h4>一些内容</h4>
+          <button @click="isShow = false">关闭弹窗</button>
+        </div>
+      </div>
+    </teleport>
+    ```
+
+> 3.Suspense
+
+- 等待异步组件时渲染一些额外内容，让应用有更好的用户体验
+- 使用步骤：
+    - 异步引入组件
+    ```
+    import {defineAsyncComponent} from 'vue'
+    const child = defineAsyncComponent(()=> import('./components/Child.vue'))
+    ```
+    - 使用`Suspense`包裹组件，并配置好`default`与`fallback`
+    ```
+    <template>
+        <div class="app">
+            <h3>我是App组件</h3>
+            <Suspense>
+                <template v-slot:default>
+                    <Child/>
+                <template/>
+                <template v-slot:fallback>
+                    <h3>加载中...</h3>
+                <template/>
+            </Suspense>
+        </div>
+    </template>
