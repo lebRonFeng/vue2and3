@@ -113,7 +113,7 @@ vite官网：https://vitejs.cn
     - 1.尽量不要与vue.x配置混用
         - vue2.x配置（data、methods、computed...）中可以访问到setup中的属性、方法。
         - 但在setup中不能访问vue2.x配置（data、methods、computed...）。
-    - 2.setup不能是一个async函数，因为返回值不再是return的对象，而是promise,模板看不到return对象中的属性。
+    - 2.setup不能是一个async函数，因为返回值不再是return的对象，而是promise,模板看不到return对象中的属性。（后期也可以返回一个Promise实例，但需要Suspense和异步组件的配合）
 
 > 2.ref函数
 
@@ -496,3 +496,5 @@ Vue3.0的响应式
             </Suspense>
         </div>
     </template>
+    ```
+
